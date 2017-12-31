@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-public class RobotFiles implements Konstantendeponie{
+public class RobotFiles{
 	
 	public static String pathDNA = "C:\\robocode\\robots\\TestRobot1\\DNA.txt";
 	//public static String pathDnaPool = "C:\\Users\\Nikolai\\Documents\\DHBW\\5.Semester\\Robotik\\Git Repo\\Robots\\src\\TestRobot1\\DNAPool.txt";
