@@ -1,8 +1,10 @@
 package ControlApplication;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,9 +20,11 @@ public class RobotFiles{
 
 	public static void copyRobotFiles() {
 		try {
-			// kopiere Robot-File(s) ins Robocode-Verzeichnis
+			BufferedReader reader = new BufferedReader(new FileReader("robotDirectory.txt"));
 			
-			File source = new File(dest);
+			// kopiere Robot-File(s) ins Robocode-Verzeichnis
+			File source = new File(reader.readLine());
+			reader.close();
 			File dest = new File("C:\\robocode\\robots\\TestRobot1");
 			
 			copyFolder(source, dest);
