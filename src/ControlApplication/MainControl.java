@@ -23,7 +23,7 @@ public class MainControl {
 		engine.setVisible(true);
 		
 		// copy Robot Files
-		RobotFiles.copyRobotFiles();
+		RobotFiles.replace();
 		// create Dna
 		DnaOperations.createDnaPoolAtBeginning();
 
