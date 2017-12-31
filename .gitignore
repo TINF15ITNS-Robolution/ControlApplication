@@ -22,6 +22,5 @@
 hs_err_pid*
 /bin/
 
-# fuer feste Pfade
-/src/ControlApplication/Konstantendeponie.java
+robotDirectory.txt
 
