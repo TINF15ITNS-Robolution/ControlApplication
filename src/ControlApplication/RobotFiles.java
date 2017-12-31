@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-public class RobotFiles {
+public class RobotFiles implements Konstantendeponie{
 	
 	public static String pathDNA = "C:\\robocode\\robots\\TestRobot1\\DNA.txt";
 	//public static String pathDnaPool = "C:\\Users\\Nikolai\\Documents\\DHBW\\5.Semester\\Robotik\\Git Repo\\Robots\\src\\TestRobot1\\DNAPool.txt";
@@ -20,7 +20,7 @@ public class RobotFiles {
 		try {
 			// kopiere Robot-File(s) ins Robocode-Verzeichnis
 			
-			File source = new File("C:\\Users\\Nikolai\\Documents\\DHBW\\5.Semester\\Robotik\\Git Repo\\Robots\\bin\\TestRobot1");
+			File source = new File(dest);
 			File dest = new File("C:\\robocode\\robots\\TestRobot1");
 			
 			copyFolder(source, dest);
