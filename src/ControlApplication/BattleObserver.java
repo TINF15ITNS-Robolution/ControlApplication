@@ -58,7 +58,7 @@ public class BattleObserver extends BattleAdaptor {
 
 		// berechne FitnessWert
 		int turns = e.getTurns();
-
+		System.out.println("[" + e.getRound() + "]\tGeneration: "+ (int)Math.floor(e.getRound()/MainControl.populationSize) +" Robot: " + e.getRound() % MainControl.populationSize + " Turns: " + turns);
 		// speichere die aktuelle DNA mit ihrem Fitness Wert in einer Sammlung aller
 		// agbearbeiteten DNAs dieser Generation
 		File dnatxt = new File(RobotFiles.pathDNA);
@@ -111,7 +111,7 @@ public class BattleObserver extends BattleAdaptor {
 
 	// Called when the game sends out an information message during the battle
 	public void onBattleMessage(BattleMessageEvent e) {
-		System.out.println("Msg> " + e.getMessage());
+		//System.out.println("Msg> " + e.getMessage());
 	}
 
 	// Called when the game sends out an error message during the battle
