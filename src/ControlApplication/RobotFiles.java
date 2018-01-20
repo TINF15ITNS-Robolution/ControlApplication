@@ -1,62 +1,31 @@
 package ControlApplication;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 public class RobotFiles{
 	
 	public static String pathDNA = "C:\\robocode\\robots\\TestRobot1\\DNA.txt";
-	//public static String pathDnaPool = "C:\\Users\\Nikolai\\Documents\\DHBW\\5.Semester\\Robotik\\Git Repo\\Robots\\src\\TestRobot1\\DNAPool.txt";
 	public static String pathDnaPool = "C:\\robocode\\robots\\TestRobot1\\DNAPool.txt";
 	public static String pathDnaCollection = "C:\\robocode\\robots\\TestRobot1\\collectionOfDNA.txt";
 
 	public static void replace() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("robotDirectory.txt"));
-			
-			// kopiere Robot-File(s) ins Robocode-Verzeichnis
-			File source = new File(reader.readLine());
+
+			File source = new File(reader.readLine()); //Robot source as defined in user-specific tet file
 			reader.close();
 			File dest = new File("C:\\robocode\\robots\\TestRobot1");
 			
-			File[] files = dest.listFiles();
-			for (File file : files)
-			{
-			   if (!file.delete()) System.out.println("Failed to delete " + file);
-			} 
+			//delete outdated robot files
+			for (File file : dest.listFiles()) file.delete();
 			
-			
-			
+			//copy new robot files (*.class)
 			copyFolder(source, dest);
-			/*
-			 * // erzeuge Ordner
-			 * new File("C:\\robocode\\robots\\TestRobot1").mkdirs();
-			 * 
-			 * // kopiere .class Datei File source1 = new File(
-			 * "C:\\Users\\Nikolai\\Documents\\DHBW\\5.Semester\\Robotik\\Git Repo\\Robots\\bin\\TestRobot1\\TestRobot1Main.class"
-			 * ); File dest1 = new
-			 * File("C:\\robocode\\robots\\TestRobot1\\TestRobot1Main.class");
-			 * Files.copy(source1.toPath(), dest1.toPath(),
-			 * StandardCopyOption.REPLACE_EXISTING);
-			 * 
-			 * // kopiere.java-Datei File source2 = new File(
-			 * "C:\\Users\\Nikolai\\Documents\\DHBW\\5.Semester\\Robotik\\Git Repo\\Robots\\src\\TestRobot1\\TestRobot1Main.java"
-			 * ); File dest2 = new
-			 * File("C:\\robocode\\robots\\TestRobot1\\TestRobot1Main.java");
-			 * Files.copy(source2.toPath(), dest2.toPath(),
-			 * StandardCopyOption.REPLACE_EXISTING);
-			 */
-
 		} catch (IOException e) {
 			System.out.println("Problem beim Kopieren der Robot-Dateien: ");
 			e.printStackTrace();
 			System.exit(0);
 		}
-	}
-	
-	public static void cleanupRobotDirectory() {
-		
 	}
 
 	public static void copyFolder(File source, File destination) throws IOException {
