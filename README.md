@@ -16,19 +16,20 @@ MainControl.java:
   - Über die Control-API von Robocode wird Robocode gestartet und ein Battle mit Generations*PopulationSize Runden gestartet mit dem           eigenen genetischen Roboter und einem Gegner (hier SittingDuck -> sitzt nur rum)
   - zudem wird eni Battleobserver hinzugefügt, der auf Events von Robocode hört
   
-BattleObserver.java:
+BattleObserverStandard
 - wichtigsten beiden Events sind RoundEnded und RoundStarted
 RoundStarted -> aus dem DNAPool.txt muss die DNA für den nun kämpfenden Roboter erstellt und in DNA.txt gespeichert werden, welcher der Robot dann einliesst
 RoundEnded -> der FitnessWert des Robots wird ermittelt und mit der DNA in eine Sammlung der DNA Sequenzen dieser Generation in collectionDNA.txt abgespeichert
           -> wenn die Gernation beendet ist (Round % 9 == 0) -> alle 10 Runden 
             -> dann wird aus der Sammlung der DNA Sequenzen mit ihren Fitnes-Werten ein neuer DNA Pool für die nächste genration erzeugt
 
+BattleObserverNTournament:
+- Version, welche den nTournament Auswahl prozess implementiert
+
 FileTools.java:
 - ganzen Methoden, die in Files schriben und lesen
 
 DnaOperations.java:
 - die ganzen methoden, die was mit der DNA machen
+- Auswahlprozess spezifische Methoden wurden in deren Unterpackages umgezogen
 
-*Anmerkungen:*
-- ggf gibts Probleme / läuft das Programm in Fehler, wenn DNA-Dateien schon im Robocode-Verzeichnis sind. 
-  -> Verzeichnis TestRobot1Main unter .../robocode/robots vor jedem Start löschen
