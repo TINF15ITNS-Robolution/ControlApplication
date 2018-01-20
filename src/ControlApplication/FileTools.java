@@ -12,13 +12,11 @@ import java.util.List;
 
 import javax.management.RuntimeErrorException;
 
-
 public class FileTools {
 
-	
 	public static int numLinesInTextfile(File f) {
 		int anz = 0;
-		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(f))){
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(f))) {
 			// ermittle Anzahl von Zeilen (Anzahl von DNA Einträgen)
 			while ((bufferedReader.readLine()) != null)
 				anz++;
@@ -26,15 +24,15 @@ public class FileTools {
 			ex.printStackTrace();
 			System.exit(0);
 		}
-		
+
 		return anz;
 	}
-	
+
 	public static String readLineInDnaPool(File f, int lineNum) {
 		int currentLine = 0;
-		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(f))){
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(f))) {
 			String line = null;
-			while ((line = bufferedReader.readLine()) != null) {				
+			while ((line = bufferedReader.readLine()) != null) {
 				if (currentLine == lineNum) {
 					return line;
 				}
@@ -46,9 +44,9 @@ public class FileTools {
 		}
 		throw new RuntimeException();
 	}
-	
-	public static String readLineInDNA(File f) {	
-		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(f))){
+
+	public static String readLineInDNA(File f) {
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(f))) {
 			return bufferedReader.readLine();
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -56,12 +54,10 @@ public class FileTools {
 		}
 	}
 
-	
-	
 	public static void writeStringInFile(File f, String dna, boolean append) {
 		try {
 			Writer writer = new FileWriter(f, append);
-			
+
 			writer.write(dna);
 			writer.write(System.getProperty("line.separator"));
 			writer.flush();
@@ -71,7 +67,7 @@ public class FileTools {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	public static void writeStringInFile(File f, List<int[]> list) {
 		try {
 			Writer writer = new FileWriter(f);
@@ -86,7 +82,7 @@ public class FileTools {
 			System.exit(0);
 		}
 	}
-	
+
 	public static String DnaArrayToString(int[] dna) {
 		StringBuilder s = new StringBuilder();
 		for (int i = 0; i < dna.length; i++) {
@@ -103,5 +99,14 @@ public class FileTools {
 			array[i] = Integer.parseInt(teile[i]);
 		}
 		return array;
+	}
+
+	public static void copyFile(File src, File dest) {
+		try {
+			RobotFiles.copyFolder(src, dest);
+		} catch (IOException e) {
+			System.out.println("Fehler beim Kopieren eines Files");
+			e.printStackTrace();
+		}
 	}
 }

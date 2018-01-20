@@ -1,4 +1,4 @@
-package ControlApplication;
+package BattleObserverStandardPackage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import ControlApplication.DnaOperations;
+import ControlApplication.FileTools;
+import ControlApplication.MainControl;
+import ControlApplication.RobotFiles;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
@@ -14,9 +18,10 @@ import robocode.control.events.BattleMessageEvent;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.events.RoundStartedEvent;
 
-public class BattleObserver extends BattleAdaptor {
+public class BattleObserverStandard extends BattleAdaptor {
 
 	static int dnaLength = 100;
+	public static boolean dnaSelectingMethodnTournament = false;
 
 	@Override
 	public void onRoundStarted(RoundStartedEvent e) {
@@ -27,19 +32,15 @@ public class BattleObserver extends BattleAdaptor {
 		//// jede Line im DNAPool repräsentiert eine DNA Sequenz, also ein mögliches
 		//// Elternteil
 		File dnaPooltxt = new File(RobotFiles.pathDnaPool);
-		////// ermittle Anzahl der möglichen Eltern
-		int anz = FileTools.numLinesInTextfile(dnaPooltxt);
 
-		////// wähle zwei DNA-Stränge zufällig aus
-		int dna1 = (int) (Math.random() * anz);
-		int dna2 = (int) (Math.random() * anz);
-		////// wähle die Trennpunkt / Mitte aus
-		int mid = (int) (Math.random() * dnaLength);
+		int[] dnaarray1 = null;
+		int[] dnaarray2 = null;
 		//// lese die beiden betreffenden DNA Zeilen ein
-		int[] dnaarray1 = new int[dnaLength];
-		int[] dnaarray2 = new int[dnaLength];
-		dnaarray1 = FileTools.StringToDnaArray(FileTools.readLineInDnaPool(dnaPooltxt, dna1));
-		dnaarray2 = FileTools.StringToDnaArray(FileTools.readLineInDnaPool(dnaPooltxt, dna2));
+		dnaarray1 = DnaOperationsStandard.getDnaSequencePerWeightedRouletteWheel(dnaPooltxt);
+		dnaarray2 = DnaOperationsStandard.getDnaSequencePerWeightedRouletteWheel(dnaPooltxt);
+
+		// wähle die Trennpunkt / Mitte aus
+		int mid = (int) (Math.random() * dnaLength);
 
 		// vermische die beiden DNA-Stränge
 		int[] newDNA = DnaOperations.mixDNASequences(dnaarray1, dnaarray2, mid);
@@ -58,7 +59,9 @@ public class BattleObserver extends BattleAdaptor {
 
 		// berechne FitnessWert
 		int turns = e.getTurns();
-		System.out.println("[" + e.getRound() + "]\tGeneration: "+ (int)Math.floor(e.getRound()/MainControl.populationSize) +" Robot: " + e.getRound() % MainControl.populationSize + " Turns: " + turns);
+		System.out.println(
+				"[" + e.getRound() + "]\tGeneration: " + (int) Math.floor(e.getRound() / MainControl.populationSize)
+						+ " Robot: " + e.getRound() % MainControl.populationSize + " Turns: " + turns);
 		// speichere die aktuelle DNA mit ihrem Fitness Wert in einer Sammlung aller
 		// agbearbeiteten DNAs dieser Generation
 		File dnatxt = new File(RobotFiles.pathDNA);
@@ -72,13 +75,12 @@ public class BattleObserver extends BattleAdaptor {
 		// falls die gesamte Population durchgespielt wurde, berechne einen neuen
 		// DNAPool (ohne die Fitness-Werte, aber ihr Auftreten gewichtet mit diesen)
 
-
 		if (e.getRound() % MainControl.populationSize == 9) {
-			DnaOperations.createNewDNAPool();
+			DnaOperationsStandard.createNewDNAPoolWeightedRouletteWheel();
 		}
 
 		// lösche aktuelles DNA-File
-		//bewirkt nix, wirft aber auch keine Exception
+		// bewirkt nix, wirft aber auch keine Exception
 		dnatxt.delete();
 
 	}
@@ -111,7 +113,7 @@ public class BattleObserver extends BattleAdaptor {
 
 	// Called when the game sends out an information message during the battle
 	public void onBattleMessage(BattleMessageEvent e) {
-		//System.out.println("Msg> " + e.getMessage());
+		// System.out.println("Msg> " + e.getMessage());
 	}
 
 	// Called when the game sends out an error message during the battle
