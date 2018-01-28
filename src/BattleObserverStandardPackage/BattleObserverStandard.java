@@ -9,6 +9,7 @@ import java.util.List;
 
 import ControlApplication.DnaOperations;
 import ControlApplication.FileTools;
+import ControlApplication.GraphDataSink;
 import ControlApplication.MainControl;
 import ControlApplication.RobotFiles;
 import robocode.control.events.BattleAdaptor;
@@ -22,7 +23,7 @@ public class BattleObserverStandard extends BattleAdaptor {
 
 	static int dnaLength = 100;
 	public static boolean dnaSelectingMethodnTournament = false;
-
+	private GraphDataSink graphData = new GraphDataSink();
 	@Override
 	public void onRoundStarted(RoundStartedEvent e) {
 
@@ -62,6 +63,7 @@ public class BattleObserverStandard extends BattleAdaptor {
 		System.out.println(
 				"[" + e.getRound() + "]\tGeneration: " + (int) Math.floor(e.getRound() / MainControl.populationSize)
 						+ " Robot: " + e.getRound() % MainControl.populationSize + " Turns: " + turns);
+		graphData.logRound(e.getRound(), (int) Math.floor(e.getRound() / MainControl.populationSize), e.getRound() % MainControl.populationSize, turns);;
 		// speichere die aktuelle DNA mit ihrem Fitness Wert in einer Sammlung aller
 		// agbearbeiteten DNAs dieser Generation
 		File dnatxt = new File(RobotFiles.pathDNA);
