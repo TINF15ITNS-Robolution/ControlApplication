@@ -5,6 +5,7 @@ import BattleObserverNTournamentPackage.DnaOperationsNTournament;
 import BattleObserverStandardPackage.BattleObserverStandard;
 import BattleObserverStandardPackage.DnaOperationsStandard;
 import robocode.control.*;
+import robocode.control.events.IBattleListener;
 
 public class MainControl {
 
@@ -42,7 +43,8 @@ public class MainControl {
 
 		// Standard-Version
 		DnaOperationsStandard.createDnaPoolAtBeginningWeightedRouletteWheel();
-		engine.addBattleListener(new BattleObserverStandard());
+		IBattleListener standardBattleObserver = new BattleObserverStandard();
+		engine.addBattleListener(standardBattleObserver);
 		engine.runBattle(battleSpec, true);
 
 		System.out.println(
@@ -50,7 +52,9 @@ public class MainControl {
 
 		// N-Tournament-Version
 		DnaOperationsNTournament.createDnaPoolAtBeginningNTournament();
-		engine.addBattleListener(new BattleObserverNTournament());
+		engine.removeBattleListener(standardBattleObserver);
+		IBattleListener nTournamentBattleObserver = new BattleObserverNTournament();
+		engine.addBattleListener(nTournamentBattleObserver);
 		engine.runBattle(battleSpec, true);
 
 		engine.close();
