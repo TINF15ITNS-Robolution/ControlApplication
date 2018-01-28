@@ -43,7 +43,7 @@ public class MainControl {
 
 		// Standard-Version
 		DnaOperationsStandard.createDnaPoolAtBeginningWeightedRouletteWheel();
-		IBattleListener standardBattleObserver = new BattleObserverStandard();
+		IBattleListener standardBattleObserver = new BattleObserverStandard(10, 0.05, populationSize);
 		engine.addBattleListener(standardBattleObserver);
 		engine.runBattle(battleSpec, true);
 
@@ -53,7 +53,7 @@ public class MainControl {
 		// N-Tournament-Version
 		DnaOperationsNTournament.createDnaPoolAtBeginningNTournament();
 		engine.removeBattleListener(standardBattleObserver);
-		IBattleListener nTournamentBattleObserver = new BattleObserverNTournament();
+		IBattleListener nTournamentBattleObserver = new BattleObserverNTournament(10, 3, 0.05, populationSize);
 		engine.addBattleListener(nTournamentBattleObserver);
 		engine.runBattle(battleSpec, true);
 

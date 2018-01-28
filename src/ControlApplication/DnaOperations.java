@@ -3,7 +3,6 @@ package ControlApplication;
 
 public class DnaOperations {
 
-	public static double mutationPercentage = 0.05;
 
 	/**
 	 * vermischt die beiden übergebenden DNA-Sequenzen. Die neue zurückgegebende DNA
@@ -35,7 +34,7 @@ public class DnaOperations {
 	 * @param dna
 	 * @return
 	 */
-	public static int[] mutateDNASequences(int[] dna) {
+	public static int[] mutateDNASequences(int[] dna, double mutationPercentage) {
 		for (int i = 0; i < dna.length; i++) {
 			if (Math.random() < mutationPercentage) {
 				dna[i] = (int) (Math.random() * 2);

@@ -21,9 +21,18 @@ import robocode.control.events.RoundStartedEvent;
 
 public class BattleObserverStandard extends BattleAdaptor {
 
-	static int dnaLength = 100;
-	public static boolean dnaSelectingMethodnTournament = false;
+	static int dnaLength = 10;
+	static double mutationPercentage = 0.05;
 	private GraphDataSink graphData = new GraphDataSink();
+	static int populationSize = 10;
+	
+	
+	public BattleObserverStandard(int dnaLength, double mutatationPercentage, int populationSize) {
+		BattleObserverStandard.dnaLength = dnaLength;
+		BattleObserverStandard.mutationPercentage = mutatationPercentage;
+		BattleObserverStandard.populationSize = populationSize;
+	}
+	
 	@Override
 	public void onRoundStarted(RoundStartedEvent e) {
 
@@ -47,7 +56,7 @@ public class BattleObserverStandard extends BattleAdaptor {
 		int[] newDNA = DnaOperations.mixDNASequences(dnaarray1, dnaarray2, mid);
 
 		// Mutation
-		newDNA = DnaOperations.mutateDNASequences(newDNA);
+		newDNA = DnaOperations.mutateDNASequences(newDNA, mutationPercentage);
 
 		// schreibe die ermittelte DNA für diese Runde in das DNA-File, damit es vom
 		// Robot eingelesen wird
@@ -63,7 +72,7 @@ public class BattleObserverStandard extends BattleAdaptor {
 		System.out.println(
 				"[" + e.getRound() + "]\tGeneration: " + (int) Math.floor(e.getRound() / MainControl.populationSize)
 						+ " Robot: " + e.getRound() % MainControl.populationSize + " Turns: " + turns);
-		graphData.logRound(e.getRound(), (int) Math.floor(e.getRound() / MainControl.populationSize), e.getRound() % MainControl.populationSize, turns);;
+		graphData.logRound(e.getRound(), (int) Math.floor(e.getRound() / MainControl.populationSize), e.getRound() % MainControl.populationSize, turns);
 		// speichere die aktuelle DNA mit ihrem Fitness Wert in einer Sammlung aller
 		// agbearbeiteten DNAs dieser Generation
 		File dnatxt = new File(RobotFiles.pathDNA);
@@ -77,7 +86,7 @@ public class BattleObserverStandard extends BattleAdaptor {
 		// falls die gesamte Population durchgespielt wurde, berechne einen neuen
 		// DNAPool (ohne die Fitness-Werte, aber ihr Auftreten gewichtet mit diesen)
 
-		if (e.getRound() % MainControl.populationSize == 9) {
+		if (e.getRound() % BattleObserverStandard.populationSize == (BattleObserverStandard.populationSize-1)) {
 			DnaOperationsStandard.createNewDNAPoolWeightedRouletteWheel();
 		}
 
