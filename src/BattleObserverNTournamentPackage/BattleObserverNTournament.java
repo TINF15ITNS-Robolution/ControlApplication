@@ -65,9 +65,9 @@ public class BattleObserverNTournament extends BattleAdaptor {
 		// berechne FitnessWert
 		int turns = e.getTurns();
 		System.out.println(
-				"[" + e.getRound() + "]\tGeneration: " + (int) Math.floor(e.getRound() / MainControl.populationSize)
-						+ " Robot: " + e.getRound() % MainControl.populationSize + " Turns: " + turns);
-		graphData.logRound(e.getRound(), (int) Math.floor(e.getRound() / MainControl.populationSize), e.getRound() % MainControl.populationSize, turns);
+				"[" + e.getRound() + "]\tGeneration: " + (int) Math.floor(e.getRound() / BattleObserverNTournament.populationSize)
+						+ " Robot: " + e.getRound() % BattleObserverNTournament.populationSize + " Turns: " + turns);
+		graphData.logRound(e.getRound(), (int) Math.floor(e.getRound() / BattleObserverNTournament.populationSize), e.getRound() % BattleObserverNTournament.populationSize, turns);
 		// speichere die aktuelle DNA mit ihrem Fitness Wert in einer Sammlung aller
 		// agbearbeiteten DNAs dieser Generation
 		File dnatxt = new File(RobotFiles.pathDNA);

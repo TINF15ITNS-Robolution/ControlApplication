@@ -27,6 +27,21 @@ public class RobotFiles{
 			System.exit(0);
 		}
 	}
+	
+	
+	public static void deleteOldDNAFiles() {
+		File f = new File(pathDNA);
+		if(f.exists())f.delete();
+		if(f.exists())throw new RuntimeException("File konnte nicht gelöscht werden");
+		
+		f = new File(pathDnaPool);
+		if(f.exists())f.delete();
+		if(f.exists())throw new RuntimeException("File konnte nicht gelöscht werden");
+		
+		f = new File(pathDnaCollection);
+		if(f.exists())f.delete();
+		if(f.exists())throw new RuntimeException("File konnte nicht gelöscht werden");
+	}
 
 	public static void copyFolder(File source, File destination) throws IOException {
 		if (source.isDirectory()) {

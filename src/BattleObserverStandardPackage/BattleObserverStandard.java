@@ -27,9 +27,9 @@ public class BattleObserverStandard extends BattleAdaptor {
 	static int populationSize = 10;
 	
 	
-	public BattleObserverStandard(int dnaLength, double mutatationPercentage, int populationSize) {
+	public BattleObserverStandard(int dnaLength, double mutationPercentage, int populationSize) {
 		BattleObserverStandard.dnaLength = dnaLength;
-		BattleObserverStandard.mutationPercentage = mutatationPercentage;
+		BattleObserverStandard.mutationPercentage = mutationPercentage;
 		BattleObserverStandard.populationSize = populationSize;
 	}
 	
@@ -56,7 +56,7 @@ public class BattleObserverStandard extends BattleAdaptor {
 		int[] newDNA = DnaOperations.mixDNASequences(dnaarray1, dnaarray2, mid);
 
 		// Mutation
-		newDNA = DnaOperations.mutateDNASequences(newDNA, mutationPercentage);
+		newDNA = DnaOperations.mutateDNASequences(newDNA, BattleObserverStandard.mutationPercentage);
 
 		// schreibe die ermittelte DNA für diese Runde in das DNA-File, damit es vom
 		// Robot eingelesen wird
@@ -70,9 +70,9 @@ public class BattleObserverStandard extends BattleAdaptor {
 		// berechne FitnessWert
 		int turns = e.getTurns();
 		System.out.println(
-				"[" + e.getRound() + "]\tGeneration: " + (int) Math.floor(e.getRound() / MainControl.populationSize)
-						+ " Robot: " + e.getRound() % MainControl.populationSize + " Turns: " + turns);
-		graphData.logRound(e.getRound(), (int) Math.floor(e.getRound() / MainControl.populationSize), e.getRound() % MainControl.populationSize, turns);
+				"[" + e.getRound() + "]\tGeneration: " + (int) Math.floor(e.getRound() / BattleObserverStandard.populationSize)
+						+ " Robot: " + e.getRound() % BattleObserverStandard.populationSize + " Turns: " + turns);
+		graphData.logRound(e.getRound(), (int) Math.floor(e.getRound() / BattleObserverStandard.populationSize), e.getRound() % BattleObserverStandard.populationSize, turns);
 		// speichere die aktuelle DNA mit ihrem Fitness Wert in einer Sammlung aller
 		// agbearbeiteten DNAs dieser Generation
 		File dnatxt = new File(RobotFiles.pathDNA);

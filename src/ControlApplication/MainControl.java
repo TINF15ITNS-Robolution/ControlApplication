@@ -1,5 +1,7 @@
 package ControlApplication;
 
+import java.util.Iterator;
+
 import BattleObserverNTournamentPackage.BattleObserverNTournament;
 import BattleObserverNTournamentPackage.DnaOperationsNTournament;
 import BattleObserverStandardPackage.BattleObserverStandard;
@@ -15,8 +17,7 @@ public class MainControl {
 	public static String robotNames = "TestRobot1.TestRobot1Main*,sample.SittingDuck";
 	public static RobocodeEngine engine;
 
-	public static int numGenerations = 1000;
-	public static int populationSize = 10;
+	public static int numGenerations = 500;
 
 	public static void main(String[] args) {
 		// erzeuge die Robocode-Umgebung
@@ -27,36 +28,55 @@ public class MainControl {
 		// copy Robot Files
 		RobotFiles.replace();
 
-		// erzeuge Battlefield-Setups
-		//// für jede Generation muss eine eigene Runde gestartet werden - nach jeder
-		// Generation wird dann die DNA gemixed
-		int numberOfRounds = numGenerations * populationSize;
-		BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-		RobotSpecification[] selectedRobots = engine.getLocalRepository(robotNames);
-		RobotSetup[] setups = new RobotSetup[] {
-				new RobotSetup((double) (battlefield.getWidth() / 2), (double) (battlefield.getHeight() / 2), 0d),
-				new RobotSetup(50d, 50d, 0d) };
+		int[] populationSizeValues = new int[] { 5, 10, 20 };
+		double[] mutationPercentageValues = new double[] { 0.03, 0.05, 0.10 };
+		int[] dnaLengthValues = new int[] { 7, 10, 20 };
+		boolean[] selectionAlgorithmValues = new boolean[] { true, false };
+		int[] nTournamentSizeValues = new int[] { 3, 5, 7 };
 
-		// Default-Werte aus Standard-Battle-Spezifikation ermittelt
-		BattleSpecification battleSpec = new BattleSpecification(battlefield, numberOfRounds, 450, 0.1, 100, false,
-				selectedRobots, setups);
+		for (int populationSize : populationSizeValues) {
+			
+			int numberOfRounds = numGenerations * populationSize;
+			// erzeuge Battlefield-Setups
+			//// für jede Generation muss eine eigene Runde gestartet werden - nach jeder
+			// Generation wird dann die DNA gemixed
+			BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
+			RobotSpecification[] selectedRobots = engine.getLocalRepository(robotNames);
+			RobotSetup[] setups = new RobotSetup[] {
+					new RobotSetup((double) (battlefield.getWidth() / 2), (double) (battlefield.getHeight() / 2), 0d),
+					new RobotSetup(50d, 50d, 0d) };
+			// Default-Werte aus Standard-Battle-Spezifikation ermittelt
+			BattleSpecification battleSpecification = new BattleSpecification(battlefield, numberOfRounds, 450, 0.1, 100, false,
+					selectedRobots, setups);
+			
+			for (double mutationPercentage : mutationPercentageValues) {
 
-		// Standard-Version
-		DnaOperationsStandard.createDnaPoolAtBeginningWeightedRouletteWheel();
-		IBattleListener standardBattleObserver = new BattleObserverStandard(10, 0.05, populationSize);
-		engine.addBattleListener(standardBattleObserver);
-		engine.runBattle(battleSpec, true);
+				for (int dnaLength : dnaLengthValues) {
 
-		System.out.println(
-				"##############################################\n Genetischer Algorithmus auf Basis des Standard Battle Oberservers beedent \n##############################################");
+					for (int nTournamentSize : nTournamentSizeValues) {
 
-		// N-Tournament-Version
-		DnaOperationsNTournament.createDnaPoolAtBeginningNTournament();
-		engine.removeBattleListener(standardBattleObserver);
-		IBattleListener nTournamentBattleObserver = new BattleObserverNTournament(10, 3, 0.05, populationSize);
-		engine.addBattleListener(nTournamentBattleObserver);
-		engine.runBattle(battleSpec, true);
+						for (boolean selectionAlgorithm : selectionAlgorithmValues) {
+							RobotFiles.deleteOldDNAFiles();
+							
+							IBattleListener listener;							
+							if (selectionAlgorithm) {//Standard
+								listener = new BattleObserverStandard(dnaLength, mutationPercentage, populationSize);
+								DnaOperationsStandard.createDnaPoolAtBeginningWeightedRouletteWheel();
+							} else {//nTournament
+								listener = new BattleObserverNTournament(dnaLength, nTournamentSize, mutationPercentage, populationSize);
+								DnaOperationsNTournament.createDnaPoolAtBeginningNTournament();
+							}
 
+							engine.addBattleListener(listener);
+							engine.runBattle(battleSpecification, true);
+							engine.removeBattleListener(listener);
+
+						}
+					}
+				}
+			}
+		}
+		
 		engine.close();
 		System.exit(0);
 	}
